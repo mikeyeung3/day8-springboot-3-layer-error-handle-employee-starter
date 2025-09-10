@@ -12,9 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,11 +61,11 @@ class EmployeeServiceTest {
     @Test
     void should_set_employee_active_status_to_false_when_delete_employee() {
         Employee employee = new Employee(1, "John Smith", 20, "MALE", 60000.0);
-
+        assertTrue(employee.getActive());
         when(employeeRepository.getEmployeeById(1)).thenReturn(employee);
         employeeService.deleteEmployee(1);
 
-        verify(employeeRepository).deleteEmployee(1);
+        verify(employeeRepository).updateEmployee(eq(1), argThat(e -> e.getActive() == false));
     }
 
 
