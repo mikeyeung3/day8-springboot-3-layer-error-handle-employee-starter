@@ -1,6 +1,7 @@
 package com.example.demo.controller.advice;
 
 import com.example.demo.exception.InvalidAgeEmployeeException;
+import com.example.demo.exception.InvalidOperationOnInactiveEmployeeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,7 +17,7 @@ public class GlobalExceptionHandler {
         return new ResponseException(e.getMessage());
     }
 
-    @ExceptionHandler(InvalidAgeEmployeeException.class)
+    @ExceptionHandler({InvalidAgeEmployeeException.class, InvalidOperationOnInactiveEmployeeException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseException invalidAgeEmployeeExceptionHandler(Exception e) {
         return new ResponseException(e.getMessage());

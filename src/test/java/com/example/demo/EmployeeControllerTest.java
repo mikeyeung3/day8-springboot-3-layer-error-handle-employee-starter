@@ -232,4 +232,26 @@ class EmployeeControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Employee's age must be between 18 and 65"));
     }
+
+    @Test
+    void should_throw_exception_when_update_employee_who_is_not_active() throws Exception {
+        Employee johnSmith = createJohnSmith();
+        mockMvc.perform(delete("/employees/" + johnSmith.getId()))
+                .andExpect(status().isNoContent());
+
+        String requestBody = """
+                {
+                    "name": "John Smith",
+                    "age": 29,
+                    "gender": "MALE",
+                    "salary": 60000.0
+                }
+                """;
+
+        mockMvc.perform(put("/employees/" + johnSmith.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Employee John Smith is not active"));
+    }
 }
