@@ -182,24 +182,6 @@ class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(5));
     }
-//
-//    @Test
-//    void should_throw_exception_when_create_employee_of_greater_than_65_or_less_than_18_years_old() throws Exception {
-//        String requestBody = """
-//                        {
-//                            "name": "John Smith",
-//                            "age": 16,
-//                            "gender": "MALE",
-//                            "salary": 60000
-//                        }
-//                """;
-//
-//        mockMvc.perform(post("/employees")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(requestBody))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.message").value("Employee's age must be between 18 and 65"));
-//    }
 
     @Test
     void should_set_employee_active_status_to_false_when_delete_employee() throws Exception {
@@ -230,5 +212,24 @@ class EmployeeControllerTest {
                         .content(requestBody))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.active").value(true));
+    }
+
+
+    @Test
+    void should_throw_exception_when_create_employee_of_greater_than_65_or_less_than_18_years_old() throws Exception {
+        String requestBody = """
+                        {
+                            "name": "John Smith",
+                            "age": 16,
+                            "gender": "MALE",
+                            "salary": 60000
+                        }
+                """;
+
+        mockMvc.perform(post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Employee's age must be between 18 and 65"));
     }
 }

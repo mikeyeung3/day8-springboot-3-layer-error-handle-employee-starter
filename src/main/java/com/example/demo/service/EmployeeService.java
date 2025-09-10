@@ -32,8 +32,8 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee) {
-        if (employee == null) {
-            throw new InvalidAgeEmployeeException("Employee cannot be null");
+        if (employee.getAge() == null) {
+            throw new InvalidAgeEmployeeException("Employee's age cannot be null");
         }
         if (employee.getAge() < 18 || employee.getAge() > 65) {
             throw new InvalidAgeEmployeeException("Employee's age must be between 18 and 65");
