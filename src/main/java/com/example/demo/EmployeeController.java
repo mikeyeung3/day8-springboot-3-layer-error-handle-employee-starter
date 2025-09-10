@@ -78,6 +78,7 @@ public class EmployeeController {
         employees.remove(found);
     }
 
+    @DeleteMapping
     public void empty() {
         employees.clear();
     }
