@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.entity.Employee;
 import com.example.demo.exception.InvaildSalaryForEmployeeAgeGreaterThan29;
 import com.example.demo.exception.InvalidAgeEmployeeException;
+import com.example.demo.exception.InvalidOperationOnInactiveEmployee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.junit.jupiter.api.Test;
@@ -54,5 +55,16 @@ class EmployeeServiceTest {
         when(employeeRepository.createEmployee(any(Employee.class))).thenReturn(employee);
 
         assertEquals(true, employee.getActive());
+    }
+
+//    When updating an employee, you need to verify whether theemployee is active or not, if he/she has already left the company,you can't update him/her.
+    @Test
+    void should_throw_exception_when_update_employee_who_is_not_active() {
+        Employee employee = new Employee(1, "John Smith", 20, "MALE", 60000.0);
+        employee.setActive(false);
+
+        when(employeeRepository.getEmployeeById(1)).thenReturn(employee);
+
+        assertThrows(InvalidOperationOnInactiveEmployee.class, () -> employeeService.updateEmployee(1, employee));
     }
 }

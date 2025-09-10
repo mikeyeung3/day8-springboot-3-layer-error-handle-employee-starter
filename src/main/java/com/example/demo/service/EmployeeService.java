@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.Employee;
 import com.example.demo.exception.InvaildSalaryForEmployeeAgeGreaterThan29;
 import com.example.demo.exception.InvalidAgeEmployeeException;
+import com.example.demo.exception.InvalidOperationOnInactiveEmployee;
 import com.example.demo.repository.EmployeeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,9 @@ public class EmployeeService {
         Employee found = employeeRepository.getEmployeeById(id);
         if (found == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found with id: " + id);
+        }
+        if (found.getActive() != null && !found.getActive()) {
+            throw new InvalidOperationOnInactiveEmployee(String.format("Employee %s is not active", found.getName()));
         }
         return employeeRepository.updateEmployee(id, updatedEmployee);
     }
