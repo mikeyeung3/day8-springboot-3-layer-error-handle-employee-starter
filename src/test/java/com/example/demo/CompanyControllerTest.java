@@ -123,18 +123,18 @@ class CompanyControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-//    @Test
-//    void should_status_404_when_put_company_by_id_not_found() throws Exception {
-//        String requestBody = """
-//                {
-//                    "name": "Spring2"
-//                }
-//                """;
-//        MockHttpServletRequestBuilder request = put("/companies/999")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(requestBody);
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isNotFound());
-//    }
+    @Test
+    void should_status_404_when_put_company_by_id_not_found() throws Exception {
+        String requestBody = """
+                {
+                    "name": "Spring2"
+                }
+                """;
+        MockHttpServletRequestBuilder request = put("/companies/999")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
 }
