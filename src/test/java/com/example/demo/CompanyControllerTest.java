@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.entity.Company;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -22,6 +25,14 @@ class CompanyControllerTest {
     @BeforeEach
     void cleanCompanies() throws Exception {
         mockMvc.perform(delete("/companies"));
+    }
+
+    private Company createCompany() throws Exception {
+        Gson gson = new Gson();
+        String company = gson.toJson(new Company(null, "Spring"));
+        ResultActions result = mockMvc.perform(post("/companies").contentType(MediaType.APPLICATION_JSON).content(company));
+        String jsonString = result.andReturn().getResponse().getContentAsString();
+        return gson.fromJson(jsonString, Company.class);
     }
 
     @Test
@@ -40,17 +51,14 @@ class CompanyControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Spring"));
     }
-//
-//    @Test
-//    void should_return_all_companies_when_no_param() throws Exception {
-//        Company spring = new Company();
-//        spring.setName("Spring");
-//        companyController.createCompany(spring);
-//
-//        mockMvc.perform(get("/companies").contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.length()").value(1));
-//    }
+
+    @Test
+    void should_return_all_companies_when_no_param() throws Exception {
+        createCompany();
+        mockMvc.perform(get("/companies").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
 //
 //    @Test
 //    void should_return_company_when_get_id_found() throws Exception {

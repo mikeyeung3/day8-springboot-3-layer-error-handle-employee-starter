@@ -15,4 +15,9 @@ public class Company {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Company(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
