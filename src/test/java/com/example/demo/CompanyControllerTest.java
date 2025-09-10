@@ -113,16 +113,16 @@ class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(5));
     }
-//
-//    @Test
-//    void should_status_404_when_get_company_by_id_not_found() throws Exception {
-//        MockHttpServletRequestBuilder request = get("/companies/999")
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isNotFound());
-//    }
-//
+
+    @Test
+    void should_status_404_when_get_company_by_id_not_found() throws Exception {
+        MockHttpServletRequestBuilder request = get("/companies/999")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
 //    @Test
 //    void should_status_404_when_put_company_by_id_not_found() throws Exception {
 //        String requestBody = """
