@@ -89,19 +89,17 @@ class CompanyControllerTest {
                 .andExpect(jsonPath("$.id").value(company.getId()))
                 .andExpect(jsonPath("$.name").value("Spring2"));
     }
-//
-//    @Test
-//    void should_return_no_content_when_delete_id_found() throws Exception {
-//        Company spring = new Company();
-//        spring.setName("Spring");
-//        Company company = companyController.createCompany(spring);
-//
-//        MockHttpServletRequestBuilder request = delete("/companies/" + company.getId())
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isNoContent());
-//    }
+
+    @Test
+    void should_return_no_content_when_delete_id_found() throws Exception {
+        Company company = createCompany();
+
+        MockHttpServletRequestBuilder request = delete("/companies/" + company.getId())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNoContent());
+    }
 //
 //    @Test
 //    void should_return_truncated_companies_when_page_size_is_limit() throws Exception {
