@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.entity.Employee;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class EmployeeControllerTest {
         return gson.fromJson(contentAsString, Employee.class);
     }
 
-    private Employee createJaneDoe() throws Exception {
+    private void createJaneDoe() throws Exception {
         Gson gson = new Gson();
         String jane = gson.toJson(new Employee(null, "Jane Doe", 22, "FEMALE", 60000.0));
         String contentAsString = mockMvc.perform(post("/employees")
@@ -40,7 +41,7 @@ class EmployeeControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        return gson.fromJson(contentAsString, Employee.class);
+        gson.fromJson(contentAsString, Employee.class);
     }
 
     @BeforeEach
