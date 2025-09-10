@@ -57,7 +57,6 @@ class EmployeeServiceTest {
         assertEquals(true, employee.getActive());
     }
 
-//    Deleting an employee simply sets the employee's active status tofalse.
     @Test
     void should_set_employee_active_status_to_false_when_delete_employee() {
         Employee employee = new Employee(1, "John Smith", 20, "MALE", 60000.0);

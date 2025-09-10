@@ -200,4 +200,17 @@ class EmployeeControllerTest {
 //                .andExpect(status().isBadRequest())
 //                .andExpect(jsonPath("$.message").value("Employee's age must be between 18 and 65"));
 //    }
+
+    @Test
+    void should_set_employee_active_status_to_false_when_delete_employee() throws Exception {
+        Employee expect = createJohnSmith();
+
+        mockMvc.perform(delete("/employees/" + expect.getId()))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/employees/" + expect.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.active").value(false));
+    }
 }
