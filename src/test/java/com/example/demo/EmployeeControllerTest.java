@@ -172,7 +172,7 @@ class EmployeeControllerTest {
 
     @Test
     void should_status_200_and_return_paged_employee_list() throws Exception {
-        for (int i = 0; i < 5; ++i){
+        for (int i = 0; i < 5; ++i) {
             createJohnSmith();
         }
 
