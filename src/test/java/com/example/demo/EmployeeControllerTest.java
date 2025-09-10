@@ -213,4 +213,22 @@ class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.active").value(false));
     }
+
+    @Test
+    void should_set_employee_active_status_to_true_when_create_employee() throws Exception {
+        String requestBody = """
+                        {
+                            "name": "John Smith",
+                            "age": 28,
+                            "gender": "MALE",
+                            "salary": 60000
+                        }
+                """;
+
+        mockMvc.perform(post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.active").value(true));
+    }
 }
