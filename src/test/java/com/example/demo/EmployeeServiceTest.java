@@ -1,9 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.entity.Employee;
-import com.example.demo.exception.InvaildSalaryForEmployeeAgeGreaterThan29;
+import com.example.demo.exception.InvaildSalaryForEmployeeAgeGreaterThan29Exception;
 import com.example.demo.exception.InvalidAgeEmployeeException;
-import com.example.demo.exception.InvalidOperationOnInactiveEmployee;
+import com.example.demo.exception.InvalidOperationOnInactiveEmployeeException;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class EmployeeServiceTest {
     @Test
     void should_throw_exception_when_create_employee_with_age_greater_than_29_and_salary_less_than_20000() {
         Employee employee = new Employee(null, "John Smith", 30, "MALE", 2000.0);
-        assertThrows(InvaildSalaryForEmployeeAgeGreaterThan29.class, () -> employeeService.createEmployee(employee));
+        assertThrows(InvaildSalaryForEmployeeAgeGreaterThan29Exception.class, () -> employeeService.createEmployee(employee));
     }
 
     @Test
@@ -76,6 +76,6 @@ class EmployeeServiceTest {
 
         when(employeeRepository.getEmployeeById(1)).thenReturn(employee);
 
-        assertThrows(InvalidOperationOnInactiveEmployee.class, () -> employeeService.updateEmployee(1, employee));
+        assertThrows(InvalidOperationOnInactiveEmployeeException.class, () -> employeeService.updateEmployee(1, employee));
     }
 }

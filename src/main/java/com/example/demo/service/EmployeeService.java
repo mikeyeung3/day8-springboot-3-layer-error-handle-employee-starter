@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Employee;
-import com.example.demo.exception.InvaildSalaryForEmployeeAgeGreaterThan29;
+import com.example.demo.exception.InvaildSalaryForEmployeeAgeGreaterThan29Exception;
 import com.example.demo.exception.InvalidAgeEmployeeException;
-import com.example.demo.exception.InvalidOperationOnInactiveEmployee;
+import com.example.demo.exception.InvalidOperationOnInactiveEmployeeException;
 import com.example.demo.repository.EmployeeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class EmployeeService {
             throw new InvalidAgeEmployeeException("Employee's age must be between 18 and 65");
         }
         if (employee.getAge() > 29 && employee.getSalary() < 20000) {
-            throw new InvaildSalaryForEmployeeAgeGreaterThan29("Employee's salary must be at least 20000 for age greater than 29");
+            throw new InvaildSalaryForEmployeeAgeGreaterThan29Exception("Employee's salary must be at least 20000 for age greater than 29");
         }
         return employeeRepository.createEmployee(employee);
     }
@@ -50,7 +50,7 @@ public class EmployeeService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found with id: " + id);
         }
         if (found.getActive() != null && !found.getActive()) {
-            throw new InvalidOperationOnInactiveEmployee(String.format("Employee %s is not active", found.getName()));
+            throw new InvalidOperationOnInactiveEmployeeException(String.format("Employee %s is not active", found.getName()));
         }
         return employeeRepository.updateEmployee(id, updatedEmployee);
     }
