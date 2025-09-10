@@ -23,4 +23,10 @@ public class GlobalExceptionHandler {
     public ResponseException invalidAgeEmployeeExceptionHandler(Exception e) {
         return new ResponseException(e.getMessage());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseException generalExceptionHandler(Exception e) {
+        return new ResponseException("An unexpected error occurred: " + e.getMessage());
+    }
 }
