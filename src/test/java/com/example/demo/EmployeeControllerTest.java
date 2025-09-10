@@ -22,6 +22,22 @@ class EmployeeControllerTest {
     @Autowired
     private EmployeeController employeeController;
 
+    private void createJohnSmith() throws Exception {
+        Gson gson = new Gson();
+        String john = gson.toJson(new Employee(null, "John Smith", 28, "MALE", 60000.0));
+        mockMvc.perform(post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(john));
+    }
+
+    private void createJaneDoe() throws Exception {
+        Gson gson = new Gson();
+        String jane = gson.toJson(new Employee(null, "Jane Doe", 22, "FEMALE", 60000.0));
+        mockMvc.perform(post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jane));
+    }
+
     @BeforeEach
     void cleanEmployees() {
         employeeController.empty();
@@ -36,18 +52,8 @@ class EmployeeControllerTest {
 
     @Test
     void should_return_all_employee() throws Exception {
-        Gson gson = new Gson();
-        String jane = gson.toJson(new Employee(null, "Jane Doe", 22, "FEMALE", 60000.0));
-        String john = gson.toJson(new Employee(null, "John Smith", 28, "MALE", 60000.0));
-
-        mockMvc.perform(post("/employees")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(john))
-                .andExpect(status().isCreated());
-        mockMvc.perform(post("/employees")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jane));
-
+        createJohnSmith();
+        createJaneDoe();
 
         mockMvc.perform(get("/employees")
                         .contentType(MediaType.APPLICATION_JSON))
