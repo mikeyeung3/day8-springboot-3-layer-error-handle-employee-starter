@@ -234,6 +234,25 @@ class EmployeeControllerTest {
     }
 
     @Test
+    void should_throw_exception_when_create_employee_with_age_greater_than_29_and_salary_less_than_20000() throws Exception {
+        String requestBody = """
+                        {
+                            "name": "John Smith",
+                            "age": 30,
+                            "gender": "MALE",
+                            "salary": 2000.0
+                        }
+                """;
+
+        mockMvc.perform(post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Salary must be greater than 20000 for employees older than 29"));
+
+    }
+
+    @Test
     void should_throw_exception_when_update_employee_who_is_not_active() throws Exception {
         Employee johnSmith = createJohnSmith();
         mockMvc.perform(delete("/employees/" + johnSmith.getId()))
