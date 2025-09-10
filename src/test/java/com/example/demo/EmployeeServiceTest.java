@@ -46,4 +46,13 @@ class EmployeeServiceTest {
         Employee employee = new Employee(null, "John Smith", 30, "MALE", 2000.0);
         assertThrows(InvaildSalaryForEmployeeAgeGreaterThan29.class, () -> employeeService.createEmployee(employee));
     }
+
+    @Test
+    void should_set_employee_active_status_to_true_when_create_employee() {
+        Employee employee = new Employee(null, "John Smith", 20, "MALE", 60000.0);
+
+        when(employeeRepository.createEmployee(any(Employee.class))).thenReturn(employee);
+
+        assertEquals(true, employee.getActive());
+    }
 }
