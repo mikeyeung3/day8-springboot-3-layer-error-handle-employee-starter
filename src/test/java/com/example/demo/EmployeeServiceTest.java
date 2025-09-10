@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -57,7 +58,18 @@ class EmployeeServiceTest {
         assertEquals(true, employee.getActive());
     }
 
-//    When updating an employee, you need to verify whether theemployee is active or not, if he/she has already left the company,you can't update him/her.
+//    Deleting an employee simply sets the employee's active status tofalse.
+    @Test
+    void should_set_employee_active_status_to_false_when_delete_employee() {
+        Employee employee = new Employee(1, "John Smith", 20, "MALE", 60000.0);
+
+        when(employeeRepository.getEmployeeById(1)).thenReturn(employee);
+        employeeService.deleteEmployee(1);
+
+        verify(employeeRepository).deleteEmployee(1);
+    }
+
+
     @Test
     void should_throw_exception_when_update_employee_who_is_not_active() {
         Employee employee = new Employee(1, "John Smith", 20, "MALE", 60000.0);
