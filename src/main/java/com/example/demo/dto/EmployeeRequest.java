@@ -10,7 +10,7 @@ public class EmployeeRequest {
     private String gender;
     @Min(value = 0, message = "Salary must be positive number")
     private Double salary;
-
+    private Integer companyId;
 
     public String getName() {
         return name;
@@ -42,5 +42,13 @@ public class EmployeeRequest {
 
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }

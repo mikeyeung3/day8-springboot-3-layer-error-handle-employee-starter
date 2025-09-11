@@ -6,6 +6,7 @@ public class EmployeeResponse {
     private Integer age;
     private String gender;
     private Boolean active;
+    private Integer companyId;
 
     public Integer getId() {
         return id;
@@ -45,5 +46,13 @@ public class EmployeeResponse {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }

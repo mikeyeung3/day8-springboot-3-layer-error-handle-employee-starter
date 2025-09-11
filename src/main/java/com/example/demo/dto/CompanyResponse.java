@@ -1,16 +1,18 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.Employee;
+
 import java.util.List;
 
 public class CompanyResponse {
     private Integer id;
     private String name;
-    private List<EmployeeResponse> employees;
+    private List<Employee> employees;
 
     public CompanyResponse() {
     }
 
-    public CompanyResponse(Integer id, String name, List<EmployeeResponse> employees) {
+    public CompanyResponse(Integer id, String name, List<Employee> employees) {
         this.id = id;
         this.name = name;
         this.employees = employees;
@@ -32,11 +34,11 @@ public class CompanyResponse {
         this.name = name;
     }
 
-    public List<EmployeeResponse> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<EmployeeResponse> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 }
