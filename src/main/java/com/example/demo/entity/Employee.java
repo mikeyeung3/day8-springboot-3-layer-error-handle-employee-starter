@@ -12,7 +12,10 @@ public class Employee {
     private Integer age;
     private String gender;
     private Double salary;
-    private Boolean isActive = true;
+    private Boolean active = true;
+
+    @Column(name = "company_id")
+    private Integer companyId;
 
     public Employee(Integer id, String name, Integer age, String gender, Double salary) {
         this.id = id;
@@ -67,10 +70,18 @@ public class Employee {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }
