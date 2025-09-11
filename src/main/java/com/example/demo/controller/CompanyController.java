@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CompanyRequest;
+import com.example.demo.dto.CompanyResponse;
+import com.example.demo.dto.mapper.CompanyMapper;
 import com.example.demo.entity.Company;
 import com.example.demo.service.CompanyService;
 import org.springframework.http.HttpStatus;
@@ -11,32 +14,37 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
     private final CompanyService companyService;
+    private final CompanyMapper companyMapper;
 
-    public CompanyController(CompanyService companyService) {
+    public CompanyController(CompanyService companyService, CompanyMapper companyMapper) {
         this.companyService = companyService;
+        this.companyMapper = companyMapper;
     }
 
     @GetMapping
-    public List<Company> getCompanies(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return companyService.getCompanies(page, size);
+    public List<CompanyResponse> getCompanies(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        List<Company> companies = companyService.getCompanies(page, size);
+        return companyMapper.toResponse(companies);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createCompany(@RequestBody Company company) {
-        return companyService.createCompany(company);
+    public CompanyResponse createCompany(@RequestBody CompanyRequest companyRequest) {
+        Company entity = companyMapper.toEntity(companyRequest);
+        return companyMapper.toResponse(companyService.createCompany(entity));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Company updateCompany(@PathVariable int id, @RequestBody Company updatedCompany) {
-        return companyService.updateCompany(id, updatedCompany);
+    public CompanyResponse updateCompany(@PathVariable int id, @RequestBody CompanyRequest companyRequest) {
+        Company entity = companyMapper.toEntity(companyRequest);
+        return companyMapper.toResponse(companyService.updateCompany(id, entity));
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Company getCompanyById(@PathVariable int id) {
-        return companyService.getCompanyById(id);
+    public CompanyResponse getCompanyById(@PathVariable int id) {
+        return companyMapper.toResponse(companyService.getCompanyById(id));
     }
 
     @DeleteMapping("/{id}")
