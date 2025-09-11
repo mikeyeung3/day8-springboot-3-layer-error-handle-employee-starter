@@ -1,57 +1,51 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Company;
-import com.example.demo.repository.CompanyRepository;
+import com.example.demo.repository.ICompanyRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CompanyService {
 
-    private final CompanyRepository companyRepository;
+    private final ICompanyRepository companyRepository;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(ICompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 
     public Company createCompany(Company company) {
-        return companyRepository.createCompany(company);
+        return companyRepository.save(company);
     }
 
     public List<Company> getCompanies(Integer page, Integer size) {
-        return companyRepository.getCompanies(page, size);
+        if (page == null || size == null)
+            return companyRepository.findAll();
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return companyRepository.findAll(pageRequest).stream().toList();
     }
 
     public Company updateCompany(int id, Company updatedCompany) {
-        Company existingCompany = companyRepository.getCompanyById(id);
-        if (existingCompany == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found with id: " + id);
-        }
-        return companyRepository.updateCompany(id, updatedCompany);
+        getCompanyById(id);// Check if company exists
+        updatedCompany.setId(id);
+        return companyRepository.save(updatedCompany);
     }
 
     public Company getCompanyById(int id) {
-        Company company = companyRepository.getCompanyById(id);
-        if (company != null) {
-            return company;
+        Optional<Company> company = companyRepository.findById(id);
+        if (company.isPresent()) {
+            return company.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found with id: " + id);
     }
 
     public void deleteCompany(int id) {
-        Company company = companyRepository.getCompanyById(id);
-        if (company != null) {
-            companyRepository.deleteCompany(id);
-            return;
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found with id: " + id);
+        Company companyById = getCompanyById(id);
+        companyRepository.delete(companyById);
     }
-
-    public void empty() {
-        companyRepository.empty();
-    }
-
 }
