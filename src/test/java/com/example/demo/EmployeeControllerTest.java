@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -19,6 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmployeeControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private Employee createJohnSmith() throws Exception {
         Gson gson = new Gson();
@@ -45,8 +49,8 @@ class EmployeeControllerTest {
     }
 
     @BeforeEach
-    void cleanEmployees() throws Exception {
-        mockMvc.perform(delete("/employees"));
+    void cleanEmployees() {
+        jdbcTemplate.execute("truncate table employee;");
     }
 
     @Test
@@ -71,7 +75,7 @@ class EmployeeControllerTest {
     void should_return_employee_when_employee_found() throws Exception {
         Employee johnSmith = createJohnSmith();
 
-        mockMvc.perform(get("/employees/1")
+        mockMvc.perform(get("/employees/" + johnSmith.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(johnSmith.getId()))
@@ -134,7 +138,7 @@ class EmployeeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(expect.getId()))
+                .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].name").value(expect.getName()))
                 .andExpect(jsonPath("$[0].age").value(expect.getAge()))
                 .andExpect(jsonPath("$[0].gender").value(expect.getGender()))
