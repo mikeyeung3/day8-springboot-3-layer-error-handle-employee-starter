@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.EmployeeRequest;
 import com.example.demo.dto.EmployeeResponse;
 import com.example.demo.dto.mapper.EmployeeMapper;
 import com.example.demo.entity.Employee;
@@ -32,14 +33,16 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeResponse createEmployee(@RequestBody Employee employee) {
+    public EmployeeResponse createEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
         return employeeMapper.toResponse(employeeService.createEmployee(employee));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EmployeeResponse updateEmployee(@PathVariable int id, @RequestBody Employee updatedEmployee) {
-        return employeeMapper.toResponse(employeeService.updateEmployee(id, updatedEmployee));
+    public EmployeeResponse updateEmployee(@PathVariable int id, @RequestBody EmployeeRequest updatedEmployee) {
+        Employee employee = employeeMapper.toEntity(updatedEmployee);
+        return employeeMapper.toResponse(employeeService.updateEmployee(id, employee));
     }
 
     @DeleteMapping("/{id}")
